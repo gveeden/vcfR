@@ -24,7 +24,7 @@
 #' 
 #' @export
 #' 
-addID <- function(x, sep="_"){
+addID <- function(x, sep="_", ID_default=NA){
   if( class(x) == 'chromR' ){
     ID <- x@vcf@fix[,'ID']
     CHROM <- x@vcf@fix[,'CHROM']
@@ -37,6 +37,8 @@ addID <- function(x, sep="_"){
     stop("expecting an object of class vcfR or chromR.")
   }
   
+  ID[ID==ID_default]=NA
+
   if( sum(!is.na(ID)) < length(ID) ){
     ID[ is.na(ID) ] <- paste( CHROM[ is.na(ID) ], POS[ is.na(ID) ], sep=sep )
     if( length(unique(ID)) < length(ID) ){
