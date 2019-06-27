@@ -296,7 +296,13 @@ vcfR2DNAbin <- function( x,
     # Indel strings need to be split into characters
     x <- apply(x, MARGIN=2, function(x){ unlist(strsplit(x,"")) })
   }
-  x <- ape::as.DNAbin(t(x))
+
+  for(i in 2:ncol(x)){
+    if(i==2){
+      x <- ape::as.DNAbin(t(x[,1]))  
+    }
+    x <- rbind(ape::as.DNAbin(t(x[,i])))
+  }
   
   return(x)
 }
