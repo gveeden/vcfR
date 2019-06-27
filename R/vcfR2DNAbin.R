@@ -299,9 +299,9 @@ vcfR2DNAbin <- function( x,
 
   for(i in 2:ncol(x)){
     if(i==2){
-      x <- ape::as.DNAbin(t(x[,1]))  
+      x_partial <- ape::as.DNAbin(t(x[,1]))  
     }
-    x <- rbind(ape::as.DNAbin(t(x[,i])))
+    x_partial <- rbind(x_partial,ape::as.DNAbin(t(x[,i])))
   }
   
   return(x)
