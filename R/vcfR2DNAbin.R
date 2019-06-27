@@ -134,7 +134,7 @@ vcfR2DNAbin <- function( x,
                          asterisk_as_del = FALSE,
                          ref.seq = NULL,
                          start.pos = NULL,
-                         cores = NULL,
+                         cores = 1,
                          verbose = TRUE )
 {
   # Sanitize input.
@@ -298,7 +298,7 @@ vcfR2DNAbin <- function( x,
     x <- apply(x, MARGIN=2, function(x){ unlist(strsplit(x,"")) })
   }
 
-  if(ncol(x) >2 && !is.null(cores)){
+  if(ncol(x) >2 && cores > 1){
     library(doParallel)
     registerDoParallel(cores = cores)
     x_partial <- foreach(i=1:ncol(x), .combine=rbind) %dopar% {
@@ -307,7 +307,7 @@ vcfR2DNAbin <- function( x,
     x = x_partial
   }
   
-  if(ncol(x) > 2 && is.null(cores)){
+  if(ncol(x) > 2 && cores == 1){
     x_partial = ape::as.DNAbin(t(x[,1]))
     for(i in 2:ncol(x)){
       x_partial <- rbind(x_partial,ape::as.DNAbin(t(x[,i])))
